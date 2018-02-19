@@ -6,7 +6,7 @@ var calendarId = '';
 var startDate = new Date(1970, 0, 1);  // Default to Jan 1, 1970
 var endDate = new Date(2500, 0, 1);  // Default to Jan 1, 2500
 
-function syncFromCalendar() {
+function getCalendarGuests() {
   // Get calendar and events
   var calendar = CalendarApp.getCalendarById(calendarId);
   var calEvents = calendar.getEvents(startDate, endDate);
