@@ -49,7 +49,7 @@ You can automate the granting of permissions by setting up the script to run at 
 
 * Click File -> Current Project's Triggers
 * Add a new trigger
-* getCalendarGuests, Time-driven, <select your own interval>
+* getCalendarGuests, Time-driven, **select your own interval**
 
 
 ## Authors
