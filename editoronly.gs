@@ -1,3 +1,10 @@
+/*
+* gcalendar-editor-only v1.1
+* Google Script that makes all calendar event participants editors of the parent calendar
+*  https://github.com/CaelanBorowiec/gcalendar-editor-only
+*/
+
+
 // Calendar ID can be found in the "Calendar Address" section of the Calendar Settings.
 var calendarId = '';
 
@@ -10,6 +17,8 @@ function getCalendarGuests() {
   // Get calendar and events
   var calendar = CalendarApp.getCalendarById(calendarId);
   var calEvents = calendar.getEvents(startDate, endDate);
+
+  var scriptUser = Session.getEffectiveUser().getEmail();
 
   // Loop through calendar events
   for (var cidx = 0; cidx < calEvents.length; cidx++)
@@ -24,7 +33,8 @@ function getCalendarGuests() {
       var guestEmail = guestID.getEmail();
       Logger.log(guestEmail);
 
-      shareCalendar(calendarId, guestEmail, "writer");
+      if (guestEmail != scriptUser) // We can't change our own permissions, so don't try.
+        shareCalendar(calendarId, guestEmail, "writer");
 
     }
   }
