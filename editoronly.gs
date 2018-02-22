@@ -1,5 +1,5 @@
 /*
-* gcalendar-editor-only v1.1.1
+* gcalendar-editor-only v1.1.2
 * Google Script that makes all calendar event participants editors of the parent calendar
 *  https://github.com/CaelanBorowiec/gcalendar-editor-only
 */
@@ -31,10 +31,13 @@ function getCalendarGuests() {
     {
       var guestID = eventGuests[guestIDx];
       var guestEmail = guestID.getEmail();
+
       Logger.log("Checking " + guestEmail + ":");
 
       if (guestEmail != scriptUser) // We can't change our own permissions, so don't try.
         shareCalendar(calendarId, guestEmail, "writer");
+      else
+        Logger.log("-- " + guestEmail + " is the script owner, skipping.");
     }
   }
 }
