@@ -1,5 +1,5 @@
 /*
-* gcalendar-editor-only v1.1
+* gcalendar-editor-only v1.1.1
 * Google Script that makes all calendar event participants editors of the parent calendar
 *  https://github.com/CaelanBorowiec/gcalendar-editor-only
 */
@@ -31,11 +31,10 @@ function getCalendarGuests() {
     {
       var guestID = eventGuests[guestIDx];
       var guestEmail = guestID.getEmail();
-      Logger.log(guestEmail);
+      Logger.log("Checking " + guestEmail + ":");
 
       if (guestEmail != scriptUser) // We can't change our own permissions, so don't try.
         shareCalendar(calendarId, guestEmail, "writer");
-
     }
   }
 }
@@ -69,7 +68,7 @@ function shareCalendar( calId, user, role ) {
 
   if (!acl) {
     // No existing rule - insert one.
-    Logger.log("Role does not exist, creating...");
+    Logger.log("-- Role does not exist for "+user+", creating...");
     acl = {
       "scope": {
         "type": "user",
@@ -81,15 +80,15 @@ function shareCalendar( calId, user, role ) {
   }
   else {
     // There was a rule for this user - update it.
-    Logger.log("User is already added");
+    Logger.log("-- "+user+" is already added.");
     if (acl.role != role)
     {
-      Logger.log("Role was updated");
+      Logger.log("-- "+user+"'s role was updated.");
       acl.role = role;
       newRule = Calendar.Acl.update(acl, calId, acl.id)
     }
     else
-      Logger.log("No update needed");
+      Logger.log("-- "+user+"'s role is already correct, no changes made.");
   }
 
   return newRule;
