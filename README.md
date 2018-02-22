@@ -1,4 +1,4 @@
-# Google Calendar automatic share
+# Google Calendar auto-share
 
 This Google Script automatically makes all calendar participants (event guests) editors of the calendar.
 
@@ -9,7 +9,7 @@ Follow these instructions to get this up and running with your own calendar.
 ### Prerequisite
 
 Set up a Google calendar to be used:
-* For a new or existing calendar, open up "Settings and Sharing"
+* For a new or existing calendar, open up "Settings and Sharing".
 * Under "Integrate calendar", copy out the Calendar ID, you will need this later. Example:
 ```
 k890dw357u3nawhixe937@group.calendar.google.com
@@ -47,16 +47,14 @@ It is necessary to manually run the script once in order to grant permissions.
 ## Automate!
 You can automate the granting of permissions by setting up the script to run at a timed interval.
 
-* Click File -> Current Project's Triggers
-* Add a new trigger
-* getCalendarGuests, Time-driven, **select your own interval**
+* Click File -> Current Project's Triggers.
+* Add a new trigger.
+* getCalendarGuests, Time-driven, *select your own interval*.
 
 
 ## Authors
 
 * **Caelan Borowiec** - *Initial work* - [CaelanBorowiec](https://github.com/CaelanBorowiec/)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 
 ## Acknowledgments
