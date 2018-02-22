@@ -34,6 +34,7 @@ function getCalendarGuests() {
  * Set up calendar sharing for a single user. Refer to
  * https://developers.google.com/google-apps/calendar/v3/reference/acl/insert.
  * Uses Advanced Calendar Service, which must be enabled via Developer's Dashboard.
+ * Calendar API must also be enabled in the gs project (Resources -> Advanced Google Services)
  *
  * @param {string} calId   Calendar ID
  * @param {string} user    Email address to share with
