@@ -1,19 +1,31 @@
 /*
-* gcalendar-editor-only v1.2
+* gcalendar-editor-only v1.3
 * Google Script that makes all calendar event participants editors of the parent calendar
 *  https://github.com/CaelanBorowiec/gcalendar-editor-only
 */
 
 
 // Calendar ID can be found in the "Calendar Address" section of the Calendar Settings.
-var calendarId = '';
+// Make sure that the account running this script has edit+share permission in each calendar.
+var calendars = [
+  "something@group.calendar.google.com",
+  "another@group.calendar.google.com",
+  "..."
+];
 
 // Set the beginning and end dates that should be evaulated.
 // beginDate can be set to Date() to use today
 var startDate = new Date(1970, 0, 1);  // Default to Jan 1, 1970
 var endDate = new Date(2500, 0, 1);  // Default to Jan 1, 2500
 
-function getCalendarGuests() {
+function processCalendars() {
+  for (var cals = 0; cals < calendars.length; cals++)
+  {
+    getCalendarGuests(calendars[cals]);
+  }
+}
+
+function getCalendarGuests(calendarId) {
   // Get calendar and events
   var calendar = CalendarApp.getCalendarById(calendarId);
   var calEvents = calendar.getEvents(startDate, endDate);
