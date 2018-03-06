@@ -17,15 +17,26 @@ k890dw357u3nawhixe937@group.calendar.google.com
 
 ### Installing the script
 
-You may install as a stand-alone script or attach it to a spreadsheet.  These instructions are for stand-alone setup.
+You may install as a stand-alone script or attach it to a spreadsheet.
+If you plan to load calendar IDs from a spreadsheet you should probably attach the script using **Tools -> Script Editor**.
 
+**Stand-alone:**
 * Go to the [Apps Script Console](https://script.google.com/).
 * Click the New Script button (top left).
 * Paste in the contents of editoronly.gs
-* Add the Calendar ID for your calendar to calendarId on line 9. Example:
-
+* Add your Calendar IDs to the calendarId array on line 22. Example:
 ```
 var calendarId = 'k890dw357u3nawhixe937@group.calendar.google.com';
+```
+
+**SpreadSheet:**
+* Create a new SpreadSheet and copy the [Sheet ID](https://developers.google.com/sheets/api/guides/concepts#sheet_id).
+* Add your calendar IDs as shown here: https://goo.gl/W7TNXN
+* Click Tools -> Script Editor
+* Paste in the contents of editoronly.gs
+* Add your Sheet ID on line 29. Example:
+```
+var sheetID = '1_GjhdyhD_dHTHTsT_kfyuA5og-329gkGSA76erresj';
 ```
 
 ### Enable APIs
@@ -39,7 +50,7 @@ var calendarId = 'k890dw357u3nawhixe937@group.calendar.google.com';
 ## Grant permissions & test
 It is necessary to manually run the script once in order to grant permissions.
 
-* From the script editor, click Run -> Run Function -> getCalendarGuests.
+* From the script editor, click Run -> Run Function -> processCalendars.
 * A popup should open asking you to grant permissions.  Make sure to select the Google account that owns the calendar and the script if offered multiple.
 * Done! You can View -> Logs to make sure your calendar guests were processed.
 
@@ -49,7 +60,7 @@ You can automate the granting of permissions by setting up the script to run at 
 
 * Click File -> Current Project's Triggers.
 * Add a new trigger.
-* getCalendarGuests, Time-driven, *select your own interval*.
+* Enter processCalendars (or processCalendarsFromSheet), Time-driven, *select your own interval*.
 
 
 ## Authors
