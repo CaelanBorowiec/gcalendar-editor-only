@@ -18,6 +18,10 @@
 var startDate = new Date(1970, 0, 1);  // Default to Jan 1, 1970
 var endDate = new Date(2500, 0, 1);  // Default to Jan 1, 2500
 
+// Make public?
+// Danger! Setting this to true will make calendars publicly readable!
+var bMakePublic = false;
+
 // Add calendars to this array and call processCalendars() if you would like to keep everything in the script
 var calendars = [
   "something@group.calendar.google.com",
@@ -58,6 +62,17 @@ function processCalendars() {
   }
 }
 
+function setCalendarPublicRead(calId)
+{
+  acl = {
+    "scope": {
+      "type": "default"
+    },
+    "role": "reader"
+  };
+  Calendar.Acl.insert(acl, calId);
+}
+
 function getCalendarGuests(calendarId)
 {
   // Get calendar and events
@@ -70,6 +85,11 @@ function getCalendarGuests(calendarId)
     var scriptUser = Session.getEffectiveUser().getEmail();
 
     var arrCalendarParticipants = new Array();
+
+    if (bMakePublic)
+    {
+      setCalendarPublicRead(calendarId);
+    }
 
     // Loop through calendar events and store all
     // unique email addresses in arrCalendarParticipants
