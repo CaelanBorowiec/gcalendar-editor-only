@@ -41,6 +41,9 @@ function processCalendarsFromSheet() {
   for(var i=0;i<(lastRow-1);i++)
   {
     var calendar = CalendarApp.getCalendarById(filteredData[i][0]);
+    if (calendar == null)
+      continue;
+
     var name = calendar.getName();
     sheet.getRange('B'+(i+2)).setValue(name); // Add 2 to normalize the array and to skip row 1
     getCalendarGuests(filteredData[i][0]);
@@ -54,9 +57,13 @@ function processCalendars() {
   }
 }
 
-function getCalendarGuests(calendarId) {
+function getCalendarGuests(calendarId)
+{
   // Get calendar and events
   var calendar = CalendarApp.getCalendarById(calendarId);
+
+  if (calendar != null)
+{  
   var calEvents = calendar.getEvents(startDate, endDate);
 
   var scriptUser = Session.getEffectiveUser().getEmail();
@@ -93,6 +100,7 @@ function getCalendarGuests(calendarId) {
     else
       Logger.log("-- " + guestEmail + " is the script owner, skipping.");
   }
+}
 }
 
 /**
