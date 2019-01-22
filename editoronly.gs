@@ -63,44 +63,44 @@ function getCalendarGuests(calendarId)
   var calendar = CalendarApp.getCalendarById(calendarId);
 
   if (calendar != null)
-{  
-  var calEvents = calendar.getEvents(startDate, endDate);
+  {  
+    var calEvents = calendar.getEvents(startDate, endDate);
 
-  var scriptUser = Session.getEffectiveUser().getEmail();
+    var scriptUser = Session.getEffectiveUser().getEmail();
 
-  var arrCalendarParticipants = new Array();
+    var arrCalendarParticipants = new Array();
 
-  // Loop through calendar events and store all
-  // unique email addresses in arrCalendarParticipants
-  for (var cidx = 0; cidx < calEvents.length; cidx++)
-  {
-    var calEvent = calEvents[cidx];
-    var calEventId = calEvent.getId();
-
-    var eventGuests = calEvent.getGuestList();
-    for (var guestIDx = 0; guestIDx < eventGuests.length; guestIDx++)
+    // Loop through calendar events and store all
+    // unique email addresses in arrCalendarParticipants
+    for (var cidx = 0; cidx < calEvents.length; cidx++)
     {
-      var guestID = eventGuests[guestIDx];
-      var guestEmail = guestID.getEmail();
+      var calEvent = calEvents[cidx];
+      var calEventId = calEvent.getId();
 
-      // Check for duplicates
-      if (arrCalendarParticipants.indexOf(guestEmail) == -1) // if not already listed
-        arrCalendarParticipants.push(guestEmail); // ...then add for processing
+      var eventGuests = calEvent.getGuestList();
+      for (var guestIDx = 0; guestIDx < eventGuests.length; guestIDx++)
+      {
+        var guestID = eventGuests[guestIDx];
+        var guestEmail = guestID.getEmail();
+
+        // Check for duplicates
+        if (arrCalendarParticipants.indexOf(guestEmail) == -1) // if not already listed
+          arrCalendarParticipants.push(guestEmail); // ...then add for processing
+      }
+    }
+
+    // Use our now de-dup'd array to update permissions
+    for (var i = 0; i < arrCalendarParticipants.length; i++)
+    {
+      var guestEmail = arrCalendarParticipants[i];
+      Logger.log("Checking " + guestEmail + ":");
+
+      if (guestEmail != scriptUser) // We can't change our own permissions, so don't try.
+        shareCalendar(calendarId, guestEmail, "writer");
+      else
+        Logger.log("-- " + guestEmail + " is the script owner, skipping.");
     }
   }
-
-  // Use our now de-dup'd array to update permissions
-  for (var i = 0; i < arrCalendarParticipants.length; i++)
-  {
-    var guestEmail = arrCalendarParticipants[i];
-    Logger.log("Checking " + guestEmail + ":");
-
-    if (guestEmail != scriptUser) // We can't change our own permissions, so don't try.
-      shareCalendar(calendarId, guestEmail, "writer");
-    else
-      Logger.log("-- " + guestEmail + " is the script owner, skipping.");
-  }
-}
 }
 
 /**
