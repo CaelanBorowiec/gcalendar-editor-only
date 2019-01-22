@@ -141,7 +141,7 @@ function shareCalendar( calId, user, role ) {
     {
       Logger.log("-- "+user+"'s role was updated.");
       acl.role = role;
-      newRule = Calendar.Acl.update(acl, calId, acl.id)
+      newRule = Calendar.Acl.update(acl, calId, acl.id);
     }
     else
       Logger.log("-- "+user+"'s role is already correct, no changes made.");
