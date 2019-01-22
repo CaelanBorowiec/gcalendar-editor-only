@@ -46,6 +46,7 @@ function processCalendarsFromSheet() {
 
     var name = calendar.getName();
     sheet.getRange('B'+(i+2)).setValue(name); // Add 2 to normalize the array and to skip row 1
+    Logger.log("Processing calendar:" + name);
     getCalendarGuests(filteredData[i][0]);
   }
 }
@@ -63,7 +64,7 @@ function getCalendarGuests(calendarId)
   var calendar = CalendarApp.getCalendarById(calendarId);
 
   if (calendar != null)
-  {  
+  {
     var calEvents = calendar.getEvents(startDate, endDate);
 
     var scriptUser = Session.getEffectiveUser().getEmail();
