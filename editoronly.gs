@@ -33,12 +33,13 @@ var calendars = [
 var sheetID = "the id of your google spreadsheet";  // https://developers.google.com/sheets/api/guides/concepts#sheet_id
 var sheetName = "Sheet1";
 // Column A is for calendar ids, column B is for calendar names. https://goo.gl/W7TNXN
+// Column C is for calendar 'last updated' times
 // Row 1 is reserved for column labels and will not be processed.
 
 function processCalendarsFromSheet() {
   var sheet = SpreadsheetApp.openById(sheetID).getSheetByName(sheetName);
   var lastRow = sheet.getLastRow();
-  var array = sheet.getRange('A2:A' + lastRow).getValues();
+  var array = sheet.getRange('A2:C' + lastRow).getValues();
 
   var filteredData = array.filter(function(n){ return n != '' });
 
@@ -48,12 +49,23 @@ function processCalendarsFromSheet() {
     if (calendar == null)
       continue;
 
+    var savedTimestanp = filteredData[i][2];
+    var sModified = checkCalendarLastUpdate(filteredData[i][0]);
+
+    //Logger.log("Checking " + sModified + " = " + savedTimestanp);
+    if (sModified.toString() == filteredData[i][2])
+      continue;
+
     var name = calendar.getName();
     sheet.getRange('B'+(i+2)).setValue(name); // Add 2 to normalize the array and to skip row 1
     Logger.log("Processing calendar:" + name);
+
     getCalendarGuests(filteredData[i][0]);
+
+    sheet.getRange('C'+(i+2)).setValue(sModified); // Add 2 to normalize the array and to skip row 1
   }
 }
+
 
 function processCalendars() {
   for (var cals = 0; cals < calendars.length; cals++)
@@ -71,6 +83,25 @@ function setCalendarPublicRead(calId)
     "role": "reader"
   };
   Calendar.Acl.insert(acl, calId);
+}
+
+
+function checkCalendarLastUpdate(calendarId)
+{
+  var calendar = CalendarApp.getCalendarById(calendarId);
+  if (calendar != null)
+  {
+    var calEvents = calendar.getEvents(startDate, endDate, {orderBy: 'updated'});  //orderby not implemented  here
+    var latest = 0;
+    for (var i = 0; i < calEvents.length; i++)
+    {
+      var current = calEvents[i].getLastUpdated()
+      if (current > latest)
+        latest = current;
+    }
+    return latest;
+  }
+  return null;
 }
 
 function getCalendarGuests(calendarId)
