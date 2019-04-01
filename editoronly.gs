@@ -29,12 +29,21 @@ var calendars = [
   "..."
 ];
 
+
 // Otherwise if you would like to load calendars from a Google Sheet, set the following and call processCalendarsFromSheet()
 var sheetID = "the id of your google spreadsheet";  // https://developers.google.com/sheets/api/guides/concepts#sheet_id
 var sheetName = "Sheet1";
 // Column A is for calendar ids, column B is for calendar names. https://goo.gl/W7TNXN
 // Column C is for calendar 'last updated' times
 // Row 1 is reserved for column labels and will not be processed.
+
+//Email addresses of users who are supposed to be editors on all calendars
+//To add them as editors to all calendars in calendars list call processGlobalEditors()
+var editors = [
+  "user@email",
+  "user2@email",
+  "..."
+];
 
 function processCalendarsFromSheet() {
   var sheet = SpreadsheetApp.openById(sheetID).getSheetByName(sheetName);
@@ -73,6 +82,7 @@ function processCalendars() {
     getCalendarGuests(calendars[cals]);
   }
 }
+
 
 function setCalendarPublicRead(calId)
 {
@@ -152,8 +162,12 @@ function getCalendarGuests(calendarId)
       else
         Logger.log("-- " + guestEmail + " is the script owner, skipping.");
     }
+
+    addGlobalEditors(calendarId); //Add the global editors as writers to the calendar
+
   }
 }
+
 
 /**
  * Set up calendar sharing for a single user. Refer to
@@ -208,4 +222,12 @@ function shareCalendar( calId, user, role ) {
   }
 
   return newRule;
+}
+
+
+//Adds all users from the editors array as editors of the specified calendar
+function addGlobalEditors(calID){
+  for(var editorIDX=0; editorIDX<editors.length; editorIDX++){
+    shareCalendar(calID, editors[editorIDX], "writer");
+  }
 }
