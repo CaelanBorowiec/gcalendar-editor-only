@@ -163,6 +163,8 @@ function getCalendarGuests(calendarId)
         Logger.log("-- " + guestEmail + " is the script owner, skipping.");
     }
 
+    addGlobalEditors(calendarId); //Add the global editors as writers to the calendar
+
   }
 }
 
@@ -222,14 +224,6 @@ function shareCalendar( calId, user, role ) {
   return newRule;
 }
 
-
-//Goes through the calendar list and adds the users in the editors array as editors for each one
-function processGlobalEditors(){
-  for (var cals = 0; cals < calendars.length; cals++)
-  {
-    addGlobalEditors(calendars[cals]);
-  }
-}
 
 //Adds all users from the editors array as editors of the specified calendar
 function addGlobalEditors(calID){
